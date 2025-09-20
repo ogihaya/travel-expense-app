@@ -1,36 +1,122 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 旅行費用精算アプリ 🧳💰
 
-## Getting Started
+友人と旅行に行った際の費用精算を簡単に行うためのWebアプリケーションです。国内旅行から海外旅行まで対応し、複数通貨での支払いにも対応しています。
 
-First, run the development server:
+## ✨ 主な機能
 
+### 国内旅行対応
+- **参加者の追加** - 旅行メンバーを簡単に追加
+- **支払い記録** - 誰がいくら何に支払ったかを記録
+- **自動精算** - 総費用を自動で割り勘計算し、誰が誰にいくら払えば良いかを表示
+
+### 海外旅行対応
+- **多通貨対応** - 複数の通貨での支払いに対応
+- **リアルタイム為替レート** - 最新の為替レートで自動換算
+- **通貨別精算** - 各通貨ごとの精算結果を表示
+
+## 🚀 技術スタック
+
+- **Next.js 14** (App Router)
+- **TypeScript** - 型安全性を確保
+- **TailwindCSS** - モダンでレスポンシブなUI
+- **Docker** - コンテナ化による環境統一
+
+## 📦 セットアップ
+
+### 前提条件
+- Node.js 18以上
+- Docker（オプション）
+
+### インストール
+
+1. リポジトリをクローン
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd travel-expense-app
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. 依存関係をインストール
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. 環境変数を設定
+```bash
+# .env.local ファイルを作成
+echo "EXCHANGE_RATE_API_KEY=your_api_key_here" > .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. 開発サーバーを起動
+```bash
+npm run dev
+```
 
-## Learn More
+5. ブラウザで [http://localhost:3000](http://localhost:3000) を開く
 
-To learn more about Next.js, take a look at the following resources:
+### Dockerを使用する場合
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Docker Composeで起動
+docker-compose up -d
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# ログを確認
+docker-compose logs -f
+```
 
-## Deploy on Vercel
+## 🎯 使い方
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 1. 参加者を追加
+- 「参加者を追加」ボタンをクリック
+- 旅行メンバーの名前を入力して追加
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 2. 支払いを記録
+- 「支払いを追加」ボタンをクリック
+- 支払った人、金額、用途、通貨を選択して記録
+
+### 3. 精算結果を確認
+- 「精算」ボタンをクリック
+- 誰が誰にいくら払えば良いかが自動計算されます
+
+## 🌍 海外旅行での使用
+
+1. **通貨を選択** - 支払い時に使用した通貨を選択
+2. **自動換算** - アプリが自動で為替レートを取得して換算
+3. **通貨別精算** - 各通貨ごとの精算結果を確認
+
+## 🔧 環境変数
+
+| 変数名 | 説明 | 必須 |
+|--------|------|------|
+| `EXCHANGE_RATE_API_KEY` | 為替レートAPIのキー | はい |
+
+## 📝 注意事項
+
+- 為替レートは [exchangerate.host](https://exchangerate.host/) を使用
+- データはセッション内でのみ保存（ページをリロードするとリセット）
+- マイナス金額の入力はできません
+- 小数点以下の金額は適切に四捨五入されます
+
+## 🐛 トラブルシューティング
+
+### 通貨データが取得できない場合
+- インターネット接続を確認
+- APIキーが正しく設定されているか確認
+- フォールバック通貨リストが表示されます
+
+### アプリが起動しない場合
+```bash
+# 依存関係を再インストール
+rm -rf node_modules package-lock.json
+npm install
+
+# 開発サーバーを再起動
+npm run dev
+```
+
+## 🤝 貢献
+
+プルリクエストやイシューの報告を歓迎します！
+
+## 📄 ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。

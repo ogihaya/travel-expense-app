@@ -1,25 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Person } from '@/app/types/deta';
 
-export default function AddPeople() {
+interface AddPeopleProps {
+  people: Person[];
+  setPeople: (people: Person[]) => void;
+}
+
+export default function AddPeople({ people, setPeople }: AddPeopleProps) {
   // 状態管理（React Hooks）
-  const [people, setPeople] = useState<Person[]>([]); // 追加された人のリスト
   const [inputName, setInputName] = useState(''); // 入力フィールドの値
   const [errorMessage, setErrorMessage] = useState(''); // エラーメッセージ
-
-  // コンポーネントがマウントされた時にローカルストレージからデータを読み込み
-  useEffect(() => {
-    const savedPeople = localStorage.getItem('travel-people');
-    if (savedPeople) {
-      try {
-        setPeople(JSON.parse(savedPeople));
-      } catch (error) {
-        console.error('ローカルストレージからのデータ読み込みに失敗しました:', error);
-      }
-    }
-  }, []);
 
   // ローカルストレージにデータを保存する関数
   const saveToLocalStorage = (newPeople: Person[]) => {
