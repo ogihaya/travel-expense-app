@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Person, Expense, Currency } from '@/app/types/deta';
-import { fetchCurrencies } from '@/app/utils/currencyApi';
+import { fetchCurrenciesFromAPI } from '@/app/utils/currencyApi';
 
 interface AddMoneyRebalanceProps {
   people: Person[];
@@ -38,7 +38,7 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
   const loadCurrencies = async () => {
     setIsLoadingCurrencies(true);
     try {
-      const currencyList = await fetchCurrencies();
+      const currencyList = await fetchCurrenciesFromAPI();
       setCurrencies(currencyList);
     } catch (error) {
       console.error('通貨データの読み込みに失敗しました:', error);
