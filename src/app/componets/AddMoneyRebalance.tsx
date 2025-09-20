@@ -346,9 +346,9 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     受益者 <span className="text-red-500">*</span>
                   </label>
-                  <div className="space-y-2">
+                  <div className="flex flex-wrap gap-3">
                     {people.map(person => (
-                      <label key={person.id} className="flex items-center">
+                      <label key={person.id} className="flex items-center bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
                         <input
                           type="checkbox"
                           checked={formData.beneficiaries.includes(person.id)}
@@ -362,7 +362,7 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
                           }}
                           className="mr-2 text-orange-500 focus:ring-orange-500"
                         />
-                        <span className="text-sm">{person.name}</span>
+                        <span className="text-sm whitespace-nowrap">{person.name}</span>
                       </label>
                     ))}
                   </div>
