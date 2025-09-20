@@ -167,6 +167,24 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
     setErrors({});
   };
 
+  // 全選択・全選択解除の関数
+  const toggleSelectAll = () => {
+    const allPersonIds = people.map(person => person.id);
+    const isAllSelected = allPersonIds.every(id => formData.beneficiaries.includes(id));
+    
+    setFormData(prev => ({
+      ...prev,
+      beneficiaries: isAllSelected ? [] : allPersonIds
+    }));
+  };
+
+  // 全選択状態かどうかを判定する関数
+  const isAllSelected = () => {
+    if (people.length === 0) return false;
+    const allPersonIds = people.map(person => person.id);
+    return allPersonIds.every(id => formData.beneficiaries.includes(id));
+  };
+
   // 立て替え記録を削除する関数
   const deleteExpense = (id: string) => {
     const newExpenses = expenses.filter(expense => expense.id !== id);
@@ -343,9 +361,22 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
 
                 {/* 受益者選択 */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    受益者 <span className="text-red-500">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      受益者 <span className="text-red-500">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={toggleSelectAll}
+                      className={`text-sm px-3 py-1 rounded-lg border transition-colors ${
+                        isAllSelected()
+                          ? 'bg-orange-500 text-white border-orange-500 hover:bg-orange-600'
+                          : 'bg-white text-orange-500 border-orange-500 hover:bg-orange-50'
+                      }`}
+                    >
+                      {isAllSelected() ? '全選択解除' : '全選択'}
+                    </button>
+                  </div>
                   <div className="flex flex-wrap gap-3">
                     {people.map(person => (
                       <label key={person.id} className="flex items-center bg-gray-50 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
