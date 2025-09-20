@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Person } from '@/app/types/deta';
+import { Person, Expense } from '@/app/types/deta';
 
 interface AddPeopleProps {
   people: Person[];
@@ -62,11 +62,59 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
     setErrorMessage('');
   };
 
+  // 立て替え記録から人を削除できるかチェックする関数
+  const canRemovePerson = (personId: string): { canRemove: boolean; reason?: string } => {
+    try {
+      // ローカルストレージから立て替え記録を取得
+      const stored = localStorage.getItem('travel-expenses');
+      if (!stored) {
+        return { canRemove: true }; // 立て替え記録がなければ削除可能
+      }
+
+      const expenses: Expense[] = JSON.parse(stored);
+      
+      // 支払い者として使用されているかチェック
+      const isPayer = expenses.some(expense => expense.payer === personId);
+      if (isPayer) {
+        return { 
+          canRemove: false, 
+          reason: 'この人は立て替え記録の支払い者として登録されているため削除できません。まず該当する立て替え記録を削除してください。' 
+        };
+      }
+
+      // 受益者として使用されているかチェック
+      const isBeneficiary = expenses.some(expense => 
+        expense.beneficiaries.includes(personId)
+      );
+      if (isBeneficiary) {
+        return { 
+          canRemove: false, 
+          reason: 'この人は立て替え記録の受益者として登録されているため削除できません。まず該当する立て替え記録を削除してください。' 
+        };
+      }
+
+      return { canRemove: true };
+    } catch (error) {
+      console.error('立て替え記録のチェック中にエラーが発生しました:', error);
+      return { canRemove: true }; // エラーの場合は削除を許可
+    }
+  };
+
   // 人を削除する関数
   const removePerson = (id: string) => {
+    // 削除前にチェックを実行
+    const checkResult = canRemovePerson(id);
+    
+    if (!checkResult.canRemove) {
+      setErrorMessage(checkResult.reason || 'この人を削除できません');
+      return;
+    }
+
+    // チェックが通った場合のみ削除を実行
     const newPeople = people.filter(person => person.id !== id);
     setPeople(newPeople);
     saveToLocalStorage(newPeople);
+    setErrorMessage(''); // エラーメッセージをクリア
   };
 
   // 編集モードを開始する関数
