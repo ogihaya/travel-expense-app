@@ -422,6 +422,7 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
                     type="number"
                     value={formData.amount}
                     onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
+                    onWheel={(e) => e.currentTarget.blur()}
                     placeholder="0"
                     min="0"
                     max="100000000000"
