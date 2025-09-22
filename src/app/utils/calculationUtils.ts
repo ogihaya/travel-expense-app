@@ -81,7 +81,7 @@ export function calculateSettlement(
 		// 受益者の負担額を計算
 		const beneficiaryCount = expense.beneficiaries.length;
 		if (beneficiaryCount > 0) {
-			const amountPerPerson = convertedAmount / beneficiaryCount;
+			const amountPerPerson = Math.round((convertedAmount / beneficiaryCount) * 100) / 100;
 
 			expense.beneficiaries.forEach(beneficiaryId => {
 				const beneficiary = balances.find(p => p.id === beneficiaryId);
