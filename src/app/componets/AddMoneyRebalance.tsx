@@ -2,19 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import { Person, Expense, Currency } from '@/app/types/deta';
-import { fetchCurrenciesFromAPI } from '@/app/utils/currencyApi';
 
 interface AddMoneyRebalanceProps {
   people: Person[];
+  currencies: Currency[];
+  isLoadingCurrencies: boolean;
+  expenses: Expense[];
+  setExpenses: (expenses: Expense[]) => void;
 }
 
-export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
+export default function AddMoneyRebalance({ people, currencies, isLoadingCurrencies, expenses, setExpenses }: AddMoneyRebalanceProps) {
   // 状態管理（React Hooks）
-  const [expenses, setExpenses] = useState<Expense[]>([]); // 立て替え記録の配列
   const [isModalOpen, setIsModalOpen] = useState(false); // モーダルの開閉状態
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null); // 編集中の記録ID
-  const [currencies, setCurrencies] = useState<Currency[]>([]); // 通貨リスト
-  const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(false); // 通貨データ読み込み中
   
   // フォームの状態
   const [formData, setFormData] = useState({
@@ -27,37 +27,6 @@ export default function AddMoneyRebalance({ people }: AddMoneyRebalanceProps) {
   
   // エラーメッセージ
   const [errors, setErrors] = useState<{[key: string]: string}>({});
-
-  // コンポーネントがマウントされた時に通貨データを取得
-  useEffect(() => {
-    loadCurrencies();
-    loadExpensesFromStorage();
-  }, []);
-
-  // 通貨データを取得する関数
-  const loadCurrencies = async () => {
-    setIsLoadingCurrencies(true);
-    try {
-      const currencyList = await fetchCurrenciesFromAPI();
-      setCurrencies(currencyList);
-    } catch (error) {
-      console.error('通貨データの読み込みに失敗しました:', error);
-    } finally {
-      setIsLoadingCurrencies(false);
-    }
-  };
-
-  // ローカルストレージから立て替え記録を読み込む
-  const loadExpensesFromStorage = () => {
-    try {
-      const stored = localStorage.getItem('travel-expenses');
-      if (stored) {
-        setExpenses(JSON.parse(stored));
-      }
-    } catch (error) {
-      console.error('立て替え記録の読み込みに失敗しました:', error);
-    }
-  };
 
   // ローカルストレージに立て替え記録を保存する
   const saveExpensesToStorage = (newExpenses: Expense[]) => {
