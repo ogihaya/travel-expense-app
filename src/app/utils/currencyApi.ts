@@ -24,6 +24,36 @@ const MINIMAL_FALLBACK_CURRENCIES: Currency[] = [
   { code: 'AUD', name: 'Australian Dollar' }
 ];
 
+// フォールバック通貨のコードセットを作成（高速検索用）
+const FALLBACK_CURRENCY_CODES = new Set(FALLBACK_CURRENCIES.map(currency => currency.code));
+
+// 通貨リストをフォールバック通貨優先でソートする関数
+function sortCurrenciesByFallbackPriority(currencies: Currency[]): Currency[] {
+  return [...currencies].sort((a, b) => {
+    const aIsFallback = FALLBACK_CURRENCY_CODES.has(a.code);
+    const bIsFallback = FALLBACK_CURRENCY_CODES.has(b.code);
+    
+    // フォールバック通貨を先頭に配置
+    if (aIsFallback && !bIsFallback) {
+      return -1; // aを先頭に
+    }
+    if (!aIsFallback && bIsFallback) {
+      return 1; // bを先頭に
+    }
+    
+    // 両方ともフォールバック通貨、または両方ともそうでない場合
+    if (aIsFallback && bIsFallback) {
+      // フォールバック通貨内では元の順序を維持
+      const aIndex = FALLBACK_CURRENCIES.findIndex(c => c.code === a.code);
+      const bIndex = FALLBACK_CURRENCIES.findIndex(c => c.code === b.code);
+      return aIndex - bIndex;
+    }
+    
+    // どちらもフォールバック通貨でない場合は通貨コードでアルファベット順
+    return a.code.localeCompare(b.code);
+  });
+}
+
 // クライアントサイドから通貨データを取得する関数（APIルート経由）
 export async function fetchCurrenciesFromAPI(): Promise<Currency[]> {
   try {
@@ -38,7 +68,7 @@ export async function fetchCurrenciesFromAPI(): Promise<Currency[]> {
     const currencies = await response.json();
     console.log(`${currencies.length}個の通貨データを取得しました`);
     
-    return currencies;
+    return sortCurrenciesByFallbackPriority(currencies);
   } catch (error) {
     console.error('通貨データの取得に失敗しました:', error);
     

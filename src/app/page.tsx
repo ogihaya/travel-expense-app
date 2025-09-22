@@ -59,6 +59,22 @@ export default function Home() {
       <AddPeople people={people} setPeople={setPeople} />
       <AddMoneyRebalance people={people} currencies={currencies} isLoadingCurrencies={isLoadingCurrencies} expenses={expenses} setExpenses={setExpenses} />
       <CalculationResult expenses={expenses} people={people} currencies={currencies} isLoadingCurrencies={isLoadingCurrencies} />
+      <div className="flex justify-center">
+      <button onClick={() => {
+        const confirm = window.confirm('すべてのデータをリセットしますか？');
+        if (!confirm) {
+          return;
+        }
+        // 特定のキーのみを削除
+        localStorage.removeItem('travel-expenses');
+        localStorage.removeItem('travel-people');
+        window.location.reload();
+      }}
+      className="w-max-2xl mx-auto px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+      >
+        すべてのデータをリセット
+      </button>
+      </div>
     </div>
   );
 }

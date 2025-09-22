@@ -110,6 +110,11 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
       return;
     }
 
+    const confirm = window.confirm('この人を削除しますか？');
+    if (!confirm) {
+      return;
+    }
+
     // チェックが通った場合のみ削除を実行
     const newPeople = people.filter(person => person.id !== id);
     setPeople(newPeople);
@@ -185,8 +190,8 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-3">旅行参加者を追加</h2>
+    <div className="w-full max-w-2xl mx-auto p-6 shadow-lg rounded-lg mb-3">
+      <h2 className="text-2xl font-bold text-gray-800 mb-3">参加者を追加</h2>
 
       {/* 入力フィールドと追加ボタン */}
       <div className="flex gap-3 mb-2">
@@ -198,7 +203,8 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
             setErrorMessage(''); // 入力時にエラーメッセージをクリア
           }}
           onKeyPress={handleKeyPress}
-          placeholder="参加者の名前を入力してください"
+          placeholder="参加者の名前を入力してください(20文字以内)"
+          maxLength={20}
           className="flex-1 px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         />
         <button
