@@ -203,7 +203,8 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
             setErrorMessage(''); // 入力時にエラーメッセージをクリア
           }}
           onKeyPress={handleKeyPress}
-          placeholder="参加者の名前を入力してください"
+          placeholder="参加者の名前を入力してください(20文字以内)"
+          maxLength={20}
           className="flex-1 px-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
         />
         <button

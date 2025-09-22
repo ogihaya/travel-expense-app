@@ -122,15 +122,21 @@ export default function CalculationResult({
         {settlements.map((settlement, index) => (
           <div 
             key={index}
-            className="bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition-shadow"
+            className="bg-white border border-gray-200 rounded-lg px-3 py-2 shadow-sm hover:shadow-md transition-shadow"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <span className="text-orange-800 bg-orange-100 text-sm border border-orange-200 rounded-full px-2 py-1">{settlement.fromName}</span>
-                <span className="text-gray-400">→</span>
-                <span className="text-orange-800 bg-orange-100 text-sm border border-orange-200 rounded-full px-2 py-1">{settlement.toName}</span>
+            <div className="flex gap-2">
+              {/* 名前部分 */}
+              <div className="flex items-center space-x-2 min-w-0 flex-1">
+                <span className="text-orange-800 bg-orange-100 text-xs border border-orange-200 rounded-full px-2 py-1 truncate">
+                  {settlement.fromName}
+                </span>
+                <span className="text-gray-400 text-sm flex-shrink-0">→</span>
+                <span className="text-orange-800 bg-orange-100 text-xs border border-orange-200 rounded-full px-2 py-1 truncate">
+                  {settlement.toName}
+                </span>
               </div>
-              <span className="text-lg font-semibold text-orange-500">
+              {/* 金額部分 */}
+              <span className="text-base font-semibold text-orange-500 text-right flex-shrink-0">
                 {formatSettlementAmount(settlement.amount, selectedCurrency)}
               </span>
             </div>

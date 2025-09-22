@@ -204,21 +204,20 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
                   </h4>
                   
                   {/* 支払い者と受益者をコンパクトに表示 */}
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-1">
                     {/* 支払い者 */}
                     <div className="flex items-center gap-1">
-                      <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                        <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                        </svg>
-                      </div>
-                      <span className="text-sm text-gray-600 font-medium">
+                      <div className="h-6 px-2 bg-blue-100 rounded-full flex items-center justify-center"
+                      title={getPersonName(expense.payer)}
+                      >
+                      <span className="text-sm text-gray-600 font-medium truncate sm:max-w-[150px] max-w-[90px]">
                         {getPersonName(expense.payer)}
                       </span>
+                      </div>
                     </div>
 
                     {/* 矢印アイコン */}
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
 
@@ -367,7 +366,7 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
                           }}
                           className="mr-2 text-orange-500 focus:ring-orange-500"
                         />
-                        <span className="text-sm whitespace-nowrap">{person.name}</span>
+                        <span className="text-sm whitespace-nowrap truncate max-w-[200px]">{person.name}</span>
                       </label>
                     ))}
                   </div>
@@ -425,6 +424,7 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
                     onChange={(e) => setFormData(prev => ({ ...prev, amount: e.target.value }))}
                     placeholder="0"
                     min="0"
+                    max="100000000000"
                     step="0.01"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                   />
