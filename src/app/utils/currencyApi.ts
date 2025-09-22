@@ -89,3 +89,86 @@ export function getFallbackCurrencies(): Currency[] {
 export function getMinimalFallbackCurrencies(): Currency[] {
   return MINIMAL_FALLBACK_CURRENCIES;
 }
+
+// 為替レート取得のための型定義
+export interface ExchangeRate {
+  from: string;
+  to: string;
+  rate: number;
+  timestamp: number;
+}
+
+// 為替レートを取得する関数（APIルート経由）
+export async function fetchExchangeRate(from: string, to: string): Promise<number> {
+  try {
+    console.log(`${from}から${to}への為替レートを取得中...`);
+
+    // サーバーサイドのAPIルート経由で為替レートを取得
+    const response = await fetch(`/api/exchange-rates?from=${from}&to=${to}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success && data.result) {
+      console.log(`${from}から${to}への為替レート: ${data.result}`);
+      return data.result;
+    }
+    
+    throw new Error('為替レートの取得に失敗しました');
+  } catch (error) {
+    console.error('為替レートの取得に失敗しました:', error);
+    
+    // エラー時は1を返す（変換なし）
+    return 1;
+  }
+}
+
+// 複数の通貨ペアの為替レートを一括取得する関数（APIルート経由）
+export async function fetchMultipleExchangeRates(
+  from: string, 
+  toCurrencies: string[]
+): Promise<Record<string, number>> {
+  try {
+    console.log(`${from}から複数通貨への為替レートを取得中...`);
+
+    // 複数の通貨をカンマ区切りで指定
+    const currencies = toCurrencies.join(',');
+    
+    // サーバーサイドのAPIルート経由で為替レートを取得
+    const response = await fetch(`/api/exchange-rates?from=${from}&currencies=${currencies}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (data.success && data.quotes) {
+      const rates: Record<string, number> = {};
+      
+      // レスポンスから為替レートを抽出
+      Object.entries(data.quotes).forEach(([key, value]) => {
+        const currency = key.replace(from, ''); // "USDJPY" -> "JPY"
+        rates[currency] = value as number;
+      });
+      
+      console.log(`${Object.keys(rates).length}個の為替レートを取得しました`);
+      
+      return rates;
+    }
+    
+    throw new Error('為替レートの取得に失敗しました');
+  } catch (error) {
+    console.error('複数為替レートの取得に失敗しました:', error);
+    
+    // エラー時は全て1を返す（変換なし）
+    const rates: Record<string, number> = {};
+    toCurrencies.forEach(currency => {
+      rates[currency] = 1;
+    });
+    return rates;
+  }
+}
