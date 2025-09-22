@@ -141,7 +141,7 @@ export default function CalculationResult({
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto shadow-lg rounded-lg mb-3">
       {/* ヘッダー */}
       <div className="mb-3">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">

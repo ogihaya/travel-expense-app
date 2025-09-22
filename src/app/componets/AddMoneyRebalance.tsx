@@ -168,7 +168,7 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto p-6">
+    <div className="w-full max-w-2xl mx-auto p-6 shadow-lg rounded-lg mb-3">
       <h2 className="text-2xl font-bold text-gray-800 mb-3">立て替え管理</h2>
       
       {/* 立て替え追加ボタン */}
