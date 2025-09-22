@@ -191,7 +191,7 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-6 shadow-lg rounded-lg mb-3">
-      <h2 className="text-2xl font-bold text-gray-800 mb-3">旅行参加者を追加</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-3">参加者を追加</h2>
 
       {/* 入力フィールドと追加ボタン */}
       <div className="flex gap-3 mb-2">

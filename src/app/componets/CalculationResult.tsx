@@ -180,7 +180,7 @@ export default function CalculationResult({
            {/* 通貨選択 */}
            <div className="mt-4">
             <label htmlFor="currency-select" className="block text-sm font-medium text-gray-700 mb-2">
-              表示通貨
+              清算通貨
             </label>
             <select
               id="currency-select"
