@@ -156,6 +156,11 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
 
   // 立て替え記録を削除する関数
   const deleteExpense = (id: string) => {
+    const confirm = window.confirm('この立て替え記録を削除しますか？');
+    if (!confirm) {
+      return;
+    }
+
     const newExpenses = expenses.filter(expense => expense.id !== id);
     setExpenses(newExpenses);
     saveExpensesToStorage(newExpenses);

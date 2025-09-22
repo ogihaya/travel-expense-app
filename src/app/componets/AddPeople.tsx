@@ -110,6 +110,11 @@ export default function AddPeople({ people, setPeople }: AddPeopleProps) {
       return;
     }
 
+    const confirm = window.confirm('この人を削除しますか？');
+    if (!confirm) {
+      return;
+    }
+
     // チェックが通った場合のみ削除を実行
     const newPeople = people.filter(person => person.id !== id);
     setPeople(newPeople);
