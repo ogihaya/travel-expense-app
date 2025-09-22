@@ -210,7 +210,7 @@ export default function AddMoneyRebalance({ people, currencies, isLoadingCurrenc
                       <div className="h-6 px-2 bg-blue-100 rounded-full flex items-center justify-center"
                       title={getPersonName(expense.payer)}
                       >
-                      <span className="text-sm text-gray-600 font-medium truncate sm:max-w-[150px] max-w-[90px]">
+                      <span className="text-sm text-gray-600 font-medium truncate sm:max-w-[150px] max-w-[60px]">
                         {getPersonName(expense.payer)}
                       </span>
                       </div>
