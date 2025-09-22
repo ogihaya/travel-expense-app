@@ -20,7 +20,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'APIキーが設定されていません' }, { status: 500 });
     }
 
-    let response;
     let apiUrl;
 
     if (to) {
@@ -35,7 +34,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'to通貨またはcurrenciesが指定されていません' }, { status: 400 });
     }
 
-    response = await fetch(apiUrl);
+    const response = await fetch(apiUrl);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

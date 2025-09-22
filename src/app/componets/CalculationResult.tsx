@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Expense, Person, Currency } from "@/app/types/deta";
 import { fetchMultipleExchangeRates } from '@/app/utils/currencyApi';
 import { 
   calculateSettlement, 
   SettlementResult, 
   formatSettlementAmount,
-  calculateTotalSettlementAmount 
 } from '@/app/utils/calculationUtils';
 
 interface CalculationResultProps {
@@ -29,7 +28,6 @@ export default function CalculationResult({
   const [selectedCurrency, setSelectedCurrency] = useState<string>('JPY');
   const [isCalculating, setIsCalculating] = useState<boolean>(false);
   const [settlements, setSettlements] = useState<SettlementResult[]>([]);
-  const [exchangeRates, setExchangeRates] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
   const [hasCalculated, setHasCalculated] = useState<boolean>(false);
 
@@ -57,7 +55,6 @@ export default function CalculationResult({
       // 必要な通貨の為替レートを取得
       const uniqueCurrencies = [...new Set(expenses.map(expense => expense.currency))];
       const rates = await fetchMultipleExchangeRates(newCurrency, uniqueCurrencies);
-      setExchangeRates(rates);
       
       // 精算を再計算
       const newSettlements = calculateSettlement(people, expenses, newCurrency, rates);
@@ -90,7 +87,6 @@ export default function CalculationResult({
       // 必要な通貨の為替レートを取得
       const uniqueCurrencies = [...new Set(expenses.map(expense => expense.currency))];
       const rates = await fetchMultipleExchangeRates(selectedCurrency, uniqueCurrencies);
-      setExchangeRates(rates);
 
       // 精算を計算
       const newSettlements = calculateSettlement(people, expenses, selectedCurrency, rates);
